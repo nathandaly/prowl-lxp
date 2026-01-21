@@ -63,10 +63,14 @@
         "test:lint": [
             "pint --parallel --test"
         ],
+        "test:analyse": [
+            "./vendor/bin/phpstan analyse --memory-limit=512M"
+        ],
         "test": [
             "@php artisan config:clear --ansi",
             "@test:lint",
-            "@php artisan test"
+            "@test:analyse",
+            "@php artisan test --compact"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

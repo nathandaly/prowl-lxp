@@ -1,0 +1,29 @@
+#!/bin/sh
+
+echo "🔍 Running pre-commit checks..."
+
+# Run Pint (code style)
+echo "📝 Checking code style with Pint..."
+./vendor/bin/pint --test
+if [ $? -ne 0 ]; then
+    echo "❌ Pint check failed. Run 'vendor/bin/pint' to fix."
+    exit 1
+fi
+
+# Run Larastan (static analysis)
+echo "🔬 Running static analysis with Larastan..."
+./vendor/bin/phpstan analyse --memory-limit=512M
+if [ $? -ne 0 ]; then
+    echo "❌ Larastan check failed. Fix the errors above."
+    exit 1
+fi
+
+# Run Pest tests
+echo "🧪 Running tests with Pest..."
+php artisan test --compact
+if [ $? -ne 0 ]; then
+    echo "❌ Tests failed. Fix the failing tests."
+    exit 1
+fi
+
+echo "✅ All checks passed!"
